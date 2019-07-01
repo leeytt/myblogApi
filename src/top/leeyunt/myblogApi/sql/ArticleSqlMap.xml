@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="top.leeyunt.myblogApi.dao.ArticleDao">
+    <cache eviction="LRU" flushInterval="30000" size="512" readOnly="true"/>
+    <insert id="save" parameterType="top.leeyunt.myblogApi.entity.Article" useGeneratedKeys="true" keyProperty="aid">insert into article(aid,article_id,title,category_id,cover,sub_message,content,html_content,is_encrypt,create_time,update_time,publish_time,delete_time,status,pageview)values(#{aid},#{article_id},#{title},#{category_id},#{cover},#{sub_message},#{content},#{html_content},#{is_encrypt},#{create_time},#{update_time},#{publish_time},#{delete_time},#{status},#{pageview})</insert>
+    <delete id="deleteById" parameterType="Object">delete from article where aid=#{aid}</delete>
+    <update id="dynamicUpdate" parameterType="top.leeyunt.myblogApi.entity.Article">update article
+        <set>
+            <if test="aid!=null">aid=#{aid},</if>
+            <if test="article_id!=null">article_id=#{article_id},</if>
+            <if test="title!=null">title=#{title},</if>
+            <if test="category_id!=null">category_id=#{category_id},</if>
+            <if test="cover!=null">cover=#{cover},</if>
+            <if test="sub_message!=null">sub_message=#{sub_message},</if>
+            <if test="content!=null">content=#{content},</if>
+            <if test="html_content!=null">html_content=#{html_content},</if>
+            <if test="is_encrypt!=null">is_encrypt=#{is_encrypt},</if>
+            <if test="create_time!=null">create_time=#{create_time},</if>
+            <if test="update_time!=null">update_time=#{update_time},</if>
+            <if test="publish_time!=null">publish_time=#{publish_time},</if>
+            <if test="delete_time!=null">delete_time=#{delete_time},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="pageview!=null">pageview=#{pageview},</if>
+        </set> where aid=#{aid}
+    </update>
+    <select id="findAll" resultType="top.leeyunt.myblogApi.entity.Article">select * from article</select>
+    <select id="findById" parameterType="Object" resultType="top.leeyunt.myblogApi.entity.Article">select * from article where aid=#{aid}</select>
+    <select id="dynamicSelect" parameterType="map" resultType="top.leeyunt.myblogApi.entity.Article">select * from article
+        <where>aid!=0
+            <if test="aid!=null">and aid=#{aid} </if>
+            <if test="article_id!=null">and article_id LIKE concat('%',#{article_id},'%') </if>
+            <if test="title!=null">and title LIKE concat('%',#{title},'%') </if>
+            <if test="category_id!=null">and category_id LIKE concat('%',#{category_id},'%') </if>
+            <if test="cover!=null">and cover LIKE concat('%',#{cover},'%') </if>
+            <if test="sub_message!=null">and sub_message LIKE concat('%',#{sub_message},'%') </if>
+            <if test="content!=null">and content LIKE concat('%',#{content},'%') </if>
+            <if test="html_content!=null">and html_content LIKE concat('%',#{html_content},'%') </if>
+            <if test="is_encrypt!=null">and is_encrypt=#{is_encrypt} </if>
+            <if test="create_time!=null">and create_time=#{create_time} </if>
+            <if test="screate_time!=null">and create_time &gt;=DATE_FORMAT(#{screate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="ecreate_time!=null">and create_time &lt;=DATE_FORMAT(#{ecreate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="update_time!=null">and update_time=#{update_time} </if>
+            <if test="supdate_time!=null">and update_time &gt;=DATE_FORMAT(#{supdate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="eupdate_time!=null">and update_time &lt;=DATE_FORMAT(#{eupdate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="publish_time!=null">and publish_time=#{publish_time} </if>
+            <if test="spublish_time!=null">and publish_time &gt;=DATE_FORMAT(#{spublish_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="epublish_time!=null">and publish_time &lt;=DATE_FORMAT(#{epublish_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="delete_time!=null">and delete_time=#{delete_time} </if>
+            <if test="sdelete_time!=null">and delete_time &gt;=DATE_FORMAT(#{sdelete_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="edelete_time!=null">and delete_time &lt;=DATE_FORMAT(#{edelete_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="status!=null">and status=#{status} </if>
+            <if test="pageview!=null">and pageview=#{pageview} </if>
+        </where>
+        <if test="orderByCase!=null">order by ${orderByCase}</if>
+        <if test="startPos!=null and pageSize!=null">limit #{startPos},#{pageSize}</if>
+    </select>
+    <select id="getArticleCount" parameterType="map" resultType="long">select Count(*) from article
+        <where>aid!=0
+            <if test="aid!=null">and aid=#{aid} </if>
+            <if test="article_id!=null">and article_id LIKE concat('%',#{article_id},'%') </if>
+            <if test="title!=null">and title LIKE concat('%',#{title},'%') </if>
+            <if test="category_id!=null">and category_id LIKE concat('%',#{category_id},'%') </if>
+            <if test="cover!=null">and cover LIKE concat('%',#{cover},'%') </if>
+            <if test="sub_message!=null">and sub_message LIKE concat('%',#{sub_message},'%') </if>
+            <if test="content!=null">and content LIKE concat('%',#{content},'%') </if>
+            <if test="html_content!=null">and html_content LIKE concat('%',#{html_content},'%') </if>
+            <if test="is_encrypt!=null">and is_encrypt=#{is_encrypt} </if>
+            <if test="create_time!=null">and create_time=#{create_time} </if>
+            <if test="screate_time!=null">and create_time &gt;=DATE_FORMAT(#{screate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="ecreate_time!=null">and create_time &lt;=DATE_FORMAT(#{ecreate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="update_time!=null">and update_time=#{update_time} </if>
+            <if test="supdate_time!=null">and update_time &gt;=DATE_FORMAT(#{supdate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="eupdate_time!=null">and update_time &lt;=DATE_FORMAT(#{eupdate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="publish_time!=null">and publish_time=#{publish_time} </if>
+            <if test="spublish_time!=null">and publish_time &gt;=DATE_FORMAT(#{spublish_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="epublish_time!=null">and publish_time &lt;=DATE_FORMAT(#{epublish_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="delete_time!=null">and delete_time=#{delete_time} </if>
+            <if test="sdelete_time!=null">and delete_time &gt;=DATE_FORMAT(#{sdelete_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="edelete_time!=null">and delete_time &lt;=DATE_FORMAT(#{edelete_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="status!=null">and status=#{status} </if>
+            <if test="pageview!=null">and pageview=#{pageview} </if>
+        </where>
+    </select>
+</mapper>

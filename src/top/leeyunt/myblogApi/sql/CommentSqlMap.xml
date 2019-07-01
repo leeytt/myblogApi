@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="top.leeyunt.myblogApi.dao.CommentDao">
+    <cache eviction="LRU" flushInterval="30000" size="512" readOnly="true"/>
+    <insert id="save" parameterType="top.leeyunt.myblogApi.entity.Comment" useGeneratedKeys="true" keyProperty="aid">insert into comment(aid,comment_id,article_id,parent_id,reply_id,coname,email,content,source_content,status,create_time,delete_time,is_author)values(#{aid},#{comment_id},#{article_id},#{parent_id},#{reply_id},#{coname},#{email},#{content},#{source_content},#{status},#{create_time},#{delete_time},#{is_author})</insert>
+    <delete id="deleteById" parameterType="Object">delete from comment where aid=#{aid}</delete>
+    <update id="dynamicUpdate" parameterType="top.leeyunt.myblogApi.entity.Comment">update comment
+        <set>
+            <if test="aid!=null">aid=#{aid},</if>
+            <if test="comment_id!=null">comment_id=#{comment_id},</if>
+            <if test="article_id!=null">article_id=#{article_id},</if>
+            <if test="parent_id!=null">parent_id=#{parent_id},</if>
+            <if test="reply_id!=null">reply_id=#{reply_id},</if>
+            <if test="coname!=null">coname=#{coname},</if>
+            <if test="email!=null">email=#{email},</if>
+            <if test="content!=null">content=#{content},</if>
+            <if test="source_content!=null">source_content=#{source_content},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="create_time!=null">create_time=#{create_time},</if>
+            <if test="delete_time!=null">delete_time=#{delete_time},</if>
+            <if test="is_author!=null">is_author=#{is_author},</if>
+        </set> where aid=#{aid}
+    </update>
+    <select id="findAll" resultType="top.leeyunt.myblogApi.entity.Comment">select * from comment</select>
+    <select id="findById" parameterType="Object" resultType="top.leeyunt.myblogApi.entity.Comment">select * from comment where aid=#{aid}</select>
+    <select id="dynamicSelect" parameterType="map" resultType="top.leeyunt.myblogApi.entity.Comment">select * from comment
+        <where>aid!=0
+            <if test="aid!=null">and aid=#{aid} </if>
+            <if test="comment_id!=null">and comment_id LIKE concat('%',#{comment_id},'%') </if>
+            <if test="article_id!=null">and article_id LIKE concat('%',#{article_id},'%') </if>
+            <if test="parent_id!=null">and parent_id=#{parent_id} </if>
+            <if test="reply_id!=null">and reply_id=#{reply_id} </if>
+            <if test="coname!=null">and coname LIKE concat('%',#{coname},'%') </if>
+            <if test="email!=null">and email LIKE concat('%',#{email},'%') </if>
+            <if test="content!=null">and content LIKE concat('%',#{content},'%') </if>
+            <if test="source_content!=null">and source_content LIKE concat('%',#{source_content},'%') </if>
+            <if test="status!=null">and status=#{status} </if>
+            <if test="create_time!=null">and create_time=#{create_time} </if>
+            <if test="screate_time!=null">and create_time &gt;=DATE_FORMAT(#{screate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="ecreate_time!=null">and create_time &lt;=DATE_FORMAT(#{ecreate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="delete_time!=null">and delete_time=#{delete_time} </if>
+            <if test="sdelete_time!=null">and delete_time &gt;=DATE_FORMAT(#{sdelete_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="edelete_time!=null">and delete_time &lt;=DATE_FORMAT(#{edelete_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="is_author!=null">and is_author=#{is_author} </if>
+        </where>
+        <if test="orderByCase!=null">order by ${orderByCase}</if>
+        <if test="startPos!=null and pageSize!=null">limit #{startPos},#{pageSize}</if>
+    </select>
+    <select id="getCommentCount" parameterType="map" resultType="long">select Count(*) from comment
+        <where>aid!=0
+            <if test="aid!=null">and aid=#{aid} </if>
+            <if test="comment_id!=null">and comment_id LIKE concat('%',#{comment_id},'%') </if>
+            <if test="article_id!=null">and article_id LIKE concat('%',#{article_id},'%') </if>
+            <if test="parent_id!=null">and parent_id=#{parent_id} </if>
+            <if test="reply_id!=null">and reply_id=#{reply_id} </if>
+            <if test="coname!=null">and coname LIKE concat('%',#{coname},'%') </if>
+            <if test="email!=null">and email LIKE concat('%',#{email},'%') </if>
+            <if test="content!=null">and content LIKE concat('%',#{content},'%') </if>
+            <if test="source_content!=null">and source_content LIKE concat('%',#{source_content},'%') </if>
+            <if test="status!=null">and status=#{status} </if>
+            <if test="create_time!=null">and create_time=#{create_time} </if>
+            <if test="screate_time!=null">and create_time &gt;=DATE_FORMAT(#{screate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="ecreate_time!=null">and create_time &lt;=DATE_FORMAT(#{ecreate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="delete_time!=null">and delete_time=#{delete_time} </if>
+            <if test="sdelete_time!=null">and delete_time &gt;=DATE_FORMAT(#{sdelete_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="edelete_time!=null">and delete_time &lt;=DATE_FORMAT(#{edelete_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="is_author!=null">and is_author=#{is_author} </if>
+        </where>
+    </select>
+</mapper>

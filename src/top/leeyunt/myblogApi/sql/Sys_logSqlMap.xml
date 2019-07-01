@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="top.leeyunt.myblogApi.dao.Sys_logDao">
+    <cache eviction="LRU" flushInterval="30000" size="512" readOnly="true"/>
+    <insert id="save" parameterType="top.leeyunt.myblogApi.entity.Sys_log" useGeneratedKeys="true" keyProperty="id">insert into sys_log(id,log_time,log_content,login_ip)values(#{id},#{log_time},#{log_content},#{login_ip})</insert>
+    <delete id="deleteById" parameterType="Object">delete from sys_log where id=#{id}</delete>
+    <update id="dynamicUpdate" parameterType="top.leeyunt.myblogApi.entity.Sys_log">update sys_log
+        <set>
+            <if test="id!=null">id=#{id},</if>
+            <if test="log_time!=null">log_time=#{log_time},</if>
+            <if test="log_content!=null">log_content=#{log_content},</if>
+            <if test="login_ip!=null">login_ip=#{login_ip},</if>
+        </set> where id=#{id}
+    </update>
+    <select id="findAll" resultType="top.leeyunt.myblogApi.entity.Sys_log">select * from sys_log</select>
+    <select id="findById" parameterType="Object" resultType="top.leeyunt.myblogApi.entity.Sys_log">select * from sys_log where id=#{id}</select>
+    <select id="dynamicSelect" parameterType="map" resultType="top.leeyunt.myblogApi.entity.Sys_log">select * from sys_log
+        <where>id!=0
+            <if test="id!=null">and id=#{id} </if>
+            <if test="log_time!=null">and log_time=#{log_time} </if>
+            <if test="slog_time!=null">and log_time &gt;=DATE_FORMAT(#{slog_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="elog_time!=null">and log_time &lt;=DATE_FORMAT(#{elog_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="log_content!=null">and log_content LIKE concat('%',#{log_content},'%') </if>
+            <if test="login_ip!=null">and login_ip LIKE concat('%',#{login_ip},'%') </if>
+        </where>
+        <if test="orderByCase!=null">order by ${orderByCase}</if>
+        <if test="startPos!=null and pageSize!=null">limit #{startPos},#{pageSize}</if>
+    </select>
+    <select id="getSys_logCount" parameterType="map" resultType="long">select Count(*) from sys_log
+        <where>id!=0
+            <if test="id!=null">and id=#{id} </if>
+            <if test="log_time!=null">and log_time=#{log_time} </if>
+            <if test="slog_time!=null">and log_time &gt;=DATE_FORMAT(#{slog_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="elog_time!=null">and log_time &lt;=DATE_FORMAT(#{elog_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="log_content!=null">and log_content LIKE concat('%',#{log_content},'%') </if>
+            <if test="login_ip!=null">and login_ip LIKE concat('%',#{login_ip},'%') </if>
+        </where>
+    </select>
+</mapper>

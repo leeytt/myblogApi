@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="top.leeyunt.myblogApi.dao.FriendurlDao">
+    <cache eviction="LRU" flushInterval="30000" size="512" readOnly="true"/>
+    <insert id="save" parameterType="top.leeyunt.myblogApi.entity.Friendurl" useGeneratedKeys="true" keyProperty="aid">insert into friendurl(aid,friendurl_id,name,url,type_id,status,create_time,update_time,delete_time)values(#{aid},#{friendurl_id},#{name},#{url},#{type_id},#{status},#{create_time},#{update_time},#{delete_time})</insert>
+    <delete id="deleteById" parameterType="Object">delete from friendurl where aid=#{aid}</delete>
+    <update id="dynamicUpdate" parameterType="top.leeyunt.myblogApi.entity.Friendurl">update friendurl
+        <set>
+            <if test="aid!=null">aid=#{aid},</if>
+            <if test="friendurl_id!=null">friendurl_id=#{friendurl_id},</if>
+            <if test="name!=null">name=#{name},</if>
+            <if test="url!=null">url=#{url},</if>
+            <if test="type_id!=null">type_id=#{type_id},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="create_time!=null">create_time=#{create_time},</if>
+            <if test="update_time!=null">update_time=#{update_time},</if>
+            <if test="delete_time!=null">delete_time=#{delete_time},</if>
+        </set> where aid=#{aid}
+    </update>
+    <select id="findAll" resultType="top.leeyunt.myblogApi.entity.Friendurl">select * from friendurl</select>
+    <select id="findById" parameterType="Object" resultType="top.leeyunt.myblogApi.entity.Friendurl">select * from friendurl where aid=#{aid}</select>
+    <select id="dynamicSelect" parameterType="map" resultType="top.leeyunt.myblogApi.entity.Friendurl">select * from friendurl
+        <where>aid!=0
+            <if test="aid!=null">and aid=#{aid} </if>
+            <if test="friendurl_id!=null">and friendurl_id LIKE concat('%',#{friendurl_id},'%') </if>
+            <if test="name!=null">and name LIKE concat('%',#{name},'%') </if>
+            <if test="url!=null">and url LIKE concat('%',#{url},'%') </if>
+            <if test="type_id!=null">and type_id LIKE concat('%',#{type_id},'%') </if>
+            <if test="status!=null">and status=#{status} </if>
+            <if test="create_time!=null">and create_time=#{create_time} </if>
+            <if test="screate_time!=null">and create_time &gt;=DATE_FORMAT(#{screate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="ecreate_time!=null">and create_time &lt;=DATE_FORMAT(#{ecreate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="update_time!=null">and update_time=#{update_time} </if>
+            <if test="supdate_time!=null">and update_time &gt;=DATE_FORMAT(#{supdate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="eupdate_time!=null">and update_time &lt;=DATE_FORMAT(#{eupdate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="delete_time!=null">and delete_time=#{delete_time} </if>
+            <if test="sdelete_time!=null">and delete_time &gt;=DATE_FORMAT(#{sdelete_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="edelete_time!=null">and delete_time &lt;=DATE_FORMAT(#{edelete_time}, '%Y-%m-%d-%H-%M')</if>
+        </where>
+        <if test="orderByCase!=null">order by ${orderByCase}</if>
+        <if test="startPos!=null and pageSize!=null">limit #{startPos},#{pageSize}</if>
+    </select>
+    <select id="getFriendurlCount" parameterType="map" resultType="long">select Count(*) from friendurl
+        <where>aid!=0
+            <if test="aid!=null">and aid=#{aid} </if>
+            <if test="friendurl_id!=null">and friendurl_id LIKE concat('%',#{friendurl_id},'%') </if>
+            <if test="name!=null">and name LIKE concat('%',#{name},'%') </if>
+            <if test="url!=null">and url LIKE concat('%',#{url},'%') </if>
+            <if test="type_id!=null">and type_id LIKE concat('%',#{type_id},'%') </if>
+            <if test="status!=null">and status=#{status} </if>
+            <if test="create_time!=null">and create_time=#{create_time} </if>
+            <if test="screate_time!=null">and create_time &gt;=DATE_FORMAT(#{screate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="ecreate_time!=null">and create_time &lt;=DATE_FORMAT(#{ecreate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="update_time!=null">and update_time=#{update_time} </if>
+            <if test="supdate_time!=null">and update_time &gt;=DATE_FORMAT(#{supdate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="eupdate_time!=null">and update_time &lt;=DATE_FORMAT(#{eupdate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="delete_time!=null">and delete_time=#{delete_time} </if>
+            <if test="sdelete_time!=null">and delete_time &gt;=DATE_FORMAT(#{sdelete_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="edelete_time!=null">and delete_time &lt;=DATE_FORMAT(#{edelete_time}, '%Y-%m-%d-%H-%M')</if>
+        </where>
+    </select>
+</mapper>

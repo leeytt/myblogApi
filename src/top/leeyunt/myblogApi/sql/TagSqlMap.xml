@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="top.leeyunt.myblogApi.dao.TagDao">
+    <cache eviction="LRU" flushInterval="30000" size="512" readOnly="true"/>
+    <insert id="save" parameterType="top.leeyunt.myblogApi.entity.Tag" useGeneratedKeys="true" keyProperty="aid">insert into tag(aid,tag_id,name,status,create_time,update_time,can_del,article_count)values(#{aid},#{tag_id},#{name},#{status},#{create_time},#{update_time},#{can_del},#{article_count})</insert>
+    <delete id="deleteById" parameterType="Object">delete from tag where aid=#{aid}</delete>
+    <update id="dynamicUpdate" parameterType="top.leeyunt.myblogApi.entity.Tag">update tag
+        <set>
+            <if test="aid!=null">aid=#{aid},</if>
+            <if test="tag_id!=null">tag_id=#{tag_id},</if>
+            <if test="name!=null">name=#{name},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="create_time!=null">create_time=#{create_time},</if>
+            <if test="update_time!=null">update_time=#{update_time},</if>
+            <if test="can_del!=null">can_del=#{can_del},</if>
+            <if test="article_count!=null">article_count=#{article_count},</if>
+        </set> where aid=#{aid}
+    </update>
+    <select id="findAll" resultType="top.leeyunt.myblogApi.entity.Tag">select * from tag</select>
+    <select id="findById" parameterType="Object" resultType="top.leeyunt.myblogApi.entity.Tag">select * from tag where aid=#{aid}</select>
+    <select id="dynamicSelect" parameterType="map" resultType="top.leeyunt.myblogApi.entity.Tag">select * from tag
+        <where>aid!=0
+            <if test="aid!=null">and aid=#{aid} </if>
+            <if test="tag_id!=null">and tag_id LIKE concat('%',#{tag_id},'%') </if>
+            <if test="name!=null">and name LIKE concat('%',#{name},'%') </if>
+            <if test="status!=null">and status=#{status} </if>
+            <if test="create_time!=null">and create_time=#{create_time} </if>
+            <if test="screate_time!=null">and create_time &gt;=DATE_FORMAT(#{screate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="ecreate_time!=null">and create_time &lt;=DATE_FORMAT(#{ecreate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="update_time!=null">and update_time=#{update_time} </if>
+            <if test="supdate_time!=null">and update_time &gt;=DATE_FORMAT(#{supdate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="eupdate_time!=null">and update_time &lt;=DATE_FORMAT(#{eupdate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="can_del!=null">and can_del=#{can_del} </if>
+            <if test="article_count!=null">and article_count=#{article_count} </if>
+        </where>
+        <if test="orderByCase!=null">order by ${orderByCase}</if>
+        <if test="startPos!=null and pageSize!=null">limit #{startPos},#{pageSize}</if>
+    </select>
+    <select id="getTagCount" parameterType="map" resultType="long">select Count(*) from tag
+        <where>aid!=0
+            <if test="aid!=null">and aid=#{aid} </if>
+            <if test="tag_id!=null">and tag_id LIKE concat('%',#{tag_id},'%') </if>
+            <if test="name!=null">and name LIKE concat('%',#{name},'%') </if>
+            <if test="status!=null">and status=#{status} </if>
+            <if test="create_time!=null">and create_time=#{create_time} </if>
+            <if test="screate_time!=null">and create_time &gt;=DATE_FORMAT(#{screate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="ecreate_time!=null">and create_time &lt;=DATE_FORMAT(#{ecreate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="update_time!=null">and update_time=#{update_time} </if>
+            <if test="supdate_time!=null">and update_time &gt;=DATE_FORMAT(#{supdate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="eupdate_time!=null">and update_time &lt;=DATE_FORMAT(#{eupdate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="can_del!=null">and can_del=#{can_del} </if>
+            <if test="article_count!=null">and article_count=#{article_count} </if>
+        </where>
+    </select>
+</mapper>

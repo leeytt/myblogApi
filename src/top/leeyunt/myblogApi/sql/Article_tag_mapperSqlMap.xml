@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="top.leeyunt.myblogApi.dao.Article_tag_mapperDao">
+    <cache eviction="LRU" flushInterval="30000" size="512" readOnly="true"/>
+    <insert id="save" parameterType="top.leeyunt.myblogApi.entity.Article_tag_mapper" useGeneratedKeys="true" keyProperty="id">insert into article_tag_mapper(id,article_id,tag_id,create_time)values(#{id},#{article_id},#{tag_id},#{create_time})</insert>
+    <delete id="deleteById" parameterType="int">delete from article_tag_mapper where id=#{id}</delete>
+    <update id="dynamicUpdate" parameterType="top.leeyunt.myblogApi.entity.Article_tag_mapper">update article_tag_mapper
+        <set>
+            <if test="id!=null">id=#{id},</if>
+            <if test="article_id!=null">article_id=#{article_id},</if>
+            <if test="tag_id!=null">tag_id=#{tag_id},</if>
+            <if test="create_time!=null">create_time=#{create_time},</if>
+        </set> where id=#{id}
+    </update>
+    <select id="findAll" resultType="top.leeyunt.myblogApi.entity.Article_tag_mapper">select * from article_tag_mapper</select>
+    <select id="findById" parameterType="int" resultType="top.leeyunt.myblogApi.entity.Article_tag_mapper">select * from article_tag_mapper where id=#{id}</select>
+    <select id="dynamicSelect" parameterType="map" resultType="top.leeyunt.myblogApi.entity.Article_tag_mapper">select * from article_tag_mapper
+        <where>id!=0
+            <if test="id!=null">and id=#{id} </if>
+            <if test="article_id!=null">and article_id LIKE concat('%',#{article_id},'%') </if>
+            <if test="tag_id!=null">and tag_id LIKE concat('%',#{tag_id},'%') </if>
+            <if test="create_time!=null">and create_time=#{create_time} </if>
+            <if test="screate_time!=null">and create_time &gt;=DATE_FORMAT(#{screate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="ecreate_time!=null">and create_time &lt;=DATE_FORMAT(#{ecreate_time}, '%Y-%m-%d-%H-%M')</if>
+        </where>
+        <if test="orderByCase!=null">order by ${orderByCase}</if>
+        <if test="startPos!=null and pageSize!=null">limit #{startPos},#{pageSize}</if>
+    </select>
+    <select id="getArticle_tag_mapperCount" parameterType="map" resultType="long">select Count(*) from article_tag_mapper
+        <where>id!=0
+            <if test="id!=null">and id=#{id} </if>
+            <if test="article_id!=null">and article_id LIKE concat('%',#{article_id},'%') </if>
+            <if test="tag_id!=null">and tag_id LIKE concat('%',#{tag_id},'%') </if>
+            <if test="create_time!=null">and create_time=#{create_time} </if>
+            <if test="screate_time!=null">and create_time &gt;=DATE_FORMAT(#{screate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="ecreate_time!=null">and create_time &lt;=DATE_FORMAT(#{ecreate_time}, '%Y-%m-%d-%H-%M')</if>
+        </where>
+    </select>
+</mapper>

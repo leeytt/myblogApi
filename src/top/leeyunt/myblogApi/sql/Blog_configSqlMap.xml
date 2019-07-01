@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="top.leeyunt.myblogApi.dao.Blog_configDao">
+    <cache eviction="LRU" flushInterval="30000" size="512" readOnly="true"/>
+    <insert id="save" parameterType="top.leeyunt.myblogApi.entity.Blog_config" useGeneratedKeys="true" keyProperty="id">insert into blog_config(id,blog_name,avatar,sign,wxpay_qrcode,alipay_qrcode,github,view_password,salt)values(#{id},#{blog_name},#{avatar},#{sign},#{wxpay_qrcode},#{alipay_qrcode},#{github},#{view_password},#{salt})</insert>
+    <delete id="deleteById" parameterType="Object">delete from blog_config where id=#{id}</delete>
+    <update id="dynamicUpdate" parameterType="top.leeyunt.myblogApi.entity.Blog_config">update blog_config
+        <set>
+            <if test="id!=null">id=#{id},</if>
+            <if test="blog_name!=null">blog_name=#{blog_name},</if>
+            <if test="avatar!=null">avatar=#{avatar},</if>
+            <if test="sign!=null">sign=#{sign},</if>
+            <if test="wxpay_qrcode!=null">wxpay_qrcode=#{wxpay_qrcode},</if>
+            <if test="alipay_qrcode!=null">alipay_qrcode=#{alipay_qrcode},</if>
+            <if test="github!=null">github=#{github},</if>
+            <if test="view_password!=null">view_password=#{view_password},</if>
+            <if test="salt!=null">salt=#{salt},</if>
+        </set> where id=#{id}
+    </update>
+    <select id="findAll" resultType="top.leeyunt.myblogApi.entity.Blog_config">select * from blog_config</select>
+    <select id="findById" parameterType="Object" resultType="top.leeyunt.myblogApi.entity.Blog_config">select * from blog_config where id=#{id}</select>
+    <select id="dynamicSelect" parameterType="map" resultType="top.leeyunt.myblogApi.entity.Blog_config">select * from blog_config
+        <where>id!=0
+            <if test="id!=null">and id=#{id} </if>
+            <if test="blog_name!=null">and blog_name LIKE concat('%',#{blog_name},'%') </if>
+            <if test="avatar!=null">and avatar LIKE concat('%',#{avatar},'%') </if>
+            <if test="sign!=null">and sign LIKE concat('%',#{sign},'%') </if>
+            <if test="wxpay_qrcode!=null">and wxpay_qrcode LIKE concat('%',#{wxpay_qrcode},'%') </if>
+            <if test="alipay_qrcode!=null">and alipay_qrcode LIKE concat('%',#{alipay_qrcode},'%') </if>
+            <if test="github!=null">and github LIKE concat('%',#{github},'%') </if>
+            <if test="view_password!=null">and view_password LIKE concat('%',#{view_password},'%') </if>
+            <if test="salt!=null">and salt LIKE concat('%',#{salt},'%') </if>
+        </where>
+        <if test="orderByCase!=null">order by ${orderByCase}</if>
+        <if test="startPos!=null and pageSize!=null">limit #{startPos},#{pageSize}</if>
+    </select>
+    <select id="getBlog_configCount" parameterType="map" resultType="long">select Count(*) from blog_config
+        <where>id!=0
+            <if test="id!=null">and id=#{id} </if>
+            <if test="blog_name!=null">and blog_name LIKE concat('%',#{blog_name},'%') </if>
+            <if test="avatar!=null">and avatar LIKE concat('%',#{avatar},'%') </if>
+            <if test="sign!=null">and sign LIKE concat('%',#{sign},'%') </if>
+            <if test="wxpay_qrcode!=null">and wxpay_qrcode LIKE concat('%',#{wxpay_qrcode},'%') </if>
+            <if test="alipay_qrcode!=null">and alipay_qrcode LIKE concat('%',#{alipay_qrcode},'%') </if>
+            <if test="github!=null">and github LIKE concat('%',#{github},'%') </if>
+            <if test="view_password!=null">and view_password LIKE concat('%',#{view_password},'%') </if>
+            <if test="salt!=null">and salt LIKE concat('%',#{salt},'%') </if>
+        </where>
+    </select>
+</mapper>

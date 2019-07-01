@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="top.leeyunt.myblogApi.dao.PagesDao">
+    <cache eviction="LRU" flushInterval="30000" size="512" readOnly="true"/>
+    <insert id="save" parameterType="top.leeyunt.myblogApi.entity.Pages" useGeneratedKeys="true" keyProperty="id">insert into pages(id,paname,md_content,html_content)values(#{id},#{paname},#{md_content},#{html_content})</insert>
+    <delete id="deleteById" parameterType="Object">delete from pages where id=#{id}</delete>
+    <update id="dynamicUpdate" parameterType="top.leeyunt.myblogApi.entity.Pages">update pages
+        <set>
+            <if test="id!=null">id=#{id},</if>
+            <if test="paname!=null">paname=#{paname},</if>
+            <if test="md_content!=null">md_content=#{md_content},</if>
+            <if test="html_content!=null">html_content=#{html_content},</if>
+        </set> where id=#{id}
+    </update>
+    <select id="findAll" resultType="top.leeyunt.myblogApi.entity.Pages">select * from pages</select>
+    <select id="findById" parameterType="Object" resultType="top.leeyunt.myblogApi.entity.Pages">select * from pages where id=#{id}</select>
+    <select id="dynamicSelect" parameterType="map" resultType="top.leeyunt.myblogApi.entity.Pages">select * from pages
+        <where>id!=0
+            <if test="id!=null">and id=#{id} </if>
+            <if test="paname!=null">and paname LIKE concat('%',#{paname},'%') </if>
+            <if test="md_content!=null">and md_content LIKE concat('%',#{md_content},'%') </if>
+            <if test="html_content!=null">and html_content LIKE concat('%',#{html_content},'%') </if>
+        </where>
+        <if test="orderByCase!=null">order by ${orderByCase}</if>
+        <if test="startPos!=null and pageSize!=null">limit #{startPos},#{pageSize}</if>
+    </select>
+    <select id="getPagesCount" parameterType="map" resultType="long">select Count(*) from pages
+        <where>id!=0
+            <if test="id!=null">and id=#{id} </if>
+            <if test="paname!=null">and paname LIKE concat('%',#{paname},'%') </if>
+            <if test="md_content!=null">and md_content LIKE concat('%',#{md_content},'%') </if>
+            <if test="html_content!=null">and html_content LIKE concat('%',#{html_content},'%') </if>
+        </where>
+    </select>
+</mapper>

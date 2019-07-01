@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="top.leeyunt.myblogApi.dao.AdminDao">
+    <cache eviction="LRU" flushInterval="30000" size="512" readOnly="true"/>
+    <insert id="save" parameterType="top.leeyunt.myblogApi.entity.Admin" useGeneratedKeys="true" keyProperty="aid">insert into admin(aid,user_id,username,password,salt,access_token,token_expires_in,create_time,status,last_login_time)values(#{aid},#{user_id},#{username},#{password},#{salt},#{access_token},#{token_expires_in},#{create_time},#{status},#{last_login_time})</insert>
+    <delete id="deleteById" parameterType="Object">delete from admin where aid=#{aid}</delete>
+    <update id="dynamicUpdate" parameterType="top.leeyunt.myblogApi.entity.Admin">update admin
+        <set>
+            <if test="aid!=null">aid=#{aid},</if>
+            <if test="user_id!=null">user_id=#{user_id},</if>
+            <if test="username!=null">username=#{username},</if>
+            <if test="password!=null">password=#{password},</if>
+            <if test="salt!=null">salt=#{salt},</if>
+            <if test="access_token!=null">access_token=#{access_token},</if>
+            <if test="token_expires_in!=null">token_expires_in=#{token_expires_in},</if>
+            <if test="create_time!=null">create_time=#{create_time},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="last_login_time!=null">last_login_time=#{last_login_time},</if>
+        </set> where aid=#{aid}
+    </update>
+    <select id="findAll" resultType="top.leeyunt.myblogApi.entity.Admin">select * from admin</select>
+    <select id="findById" parameterType="Object" resultType="top.leeyunt.myblogApi.entity.Admin">select * from admin where aid=#{aid}</select>
+    <select id="dynamicSelect" parameterType="map" resultType="top.leeyunt.myblogApi.entity.Admin">select * from admin
+        <where>aid!=0
+            <if test="aid!=null">and aid=#{aid} </if>
+            <if test="user_id!=null">and user_id LIKE concat('%',#{user_id},'%') </if>
+            <if test="username!=null">and username LIKE concat('%',#{username},'%') </if>
+            <if test="password!=null">and password LIKE concat('%',#{password},'%') </if>
+            <if test="salt!=null">and salt LIKE concat('%',#{salt},'%') </if>
+            <if test="access_token!=null">and access_token LIKE concat('%',#{access_token},'%') </if>
+            <if test="token_expires_in!=null">and token_expires_in=#{token_expires_in} </if>
+            <if test="create_time!=null">and create_time=#{create_time} </if>
+            <if test="screate_time!=null">and create_time &gt;=DATE_FORMAT(#{screate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="ecreate_time!=null">and create_time &lt;=DATE_FORMAT(#{ecreate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="status!=null">and status=#{status} </if>
+            <if test="last_login_time!=null">and last_login_time=#{last_login_time} </if>
+            <if test="slast_login_time!=null">and last_login_time &gt;=DATE_FORMAT(#{slast_login_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="elast_login_time!=null">and last_login_time &lt;=DATE_FORMAT(#{elast_login_time}, '%Y-%m-%d-%H-%M')</if>
+        </where>
+        <if test="orderByCase!=null">order by ${orderByCase}</if>
+        <if test="startPos!=null and pageSize!=null">limit #{startPos},#{pageSize}</if>
+    </select>
+    <select id="getAdminCount" parameterType="map" resultType="long">select Count(*) from admin
+        <where>aid!=0
+            <if test="aid!=null">and aid=#{aid} </if>
+            <if test="user_id!=null">and user_id LIKE concat('%',#{user_id},'%') </if>
+            <if test="username!=null">and username LIKE concat('%',#{username},'%') </if>
+            <if test="password!=null">and password LIKE concat('%',#{password},'%') </if>
+            <if test="salt!=null">and salt LIKE concat('%',#{salt},'%') </if>
+            <if test="access_token!=null">and access_token LIKE concat('%',#{access_token},'%') </if>
+            <if test="token_expires_in!=null">and token_expires_in=#{token_expires_in} </if>
+            <if test="create_time!=null">and create_time=#{create_time} </if>
+            <if test="screate_time!=null">and create_time &gt;=DATE_FORMAT(#{screate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="ecreate_time!=null">and create_time &lt;=DATE_FORMAT(#{ecreate_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="status!=null">and status=#{status} </if>
+            <if test="last_login_time!=null">and last_login_time=#{last_login_time} </if>
+            <if test="slast_login_time!=null">and last_login_time &gt;=DATE_FORMAT(#{slast_login_time}, '%Y-%m-%d-%H-%M')</if>
+            <if test="elast_login_time!=null">and last_login_time &lt;=DATE_FORMAT(#{elast_login_time}, '%Y-%m-%d-%H-%M')</if>
+        </where>
+    </select>
+</mapper>
